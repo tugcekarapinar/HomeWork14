@@ -32,14 +32,18 @@ public class DemoqaTest {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(120));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         driver.manage().window().maximize();
-
-        driver.get("https://demoqa.com/buttons");
     }
 
     @Test(priority = 0)
     public void testDoubleClickButton() {
-        WebElement btnDoubleClick = driver.findElement(By.cssSelector("button#doubleClickBtn"));
         JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        driver.get("https://demoqa.com/elements");
+        WebElement buttons = driver.findElement(By.cssSelector("#item-4"));
+        js.executeScript("arguments[0].scrollIntoView(true);", buttons);
+        buttons.click();
+
+        WebElement btnDoubleClick = driver.findElement(By.cssSelector("button#doubleClickBtn"));
         js.executeScript("arguments[0].scrollIntoView(true);", btnDoubleClick);
 
         Actions actions = new Actions(driver);
@@ -51,16 +55,22 @@ public class DemoqaTest {
 
     @Test(priority = 1)
     public void testClickButton() {
-        List<WebElement> buttons = driver.findElements(By.cssSelector("button"));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        driver.get("https://demoqa.com/elements");
+        WebElement buttons = driver.findElement(By.cssSelector("#item-4"));
+        js.executeScript("arguments[0].scrollIntoView(true);", buttons);
+        buttons.click();
+
+        List<WebElement> allButton = driver.findElements(By.cssSelector("button"));
         WebElement btnClick = null;
-        for (WebElement button : buttons) {
+        for (WebElement button : allButton) {
             if (button.getText().equals("Click Me")) {
                 btnClick = button;
                 break;
             }
         }
 
-        JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView(true);", btnClick);
 
         btnClick.click();
